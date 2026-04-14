@@ -428,22 +428,22 @@
             <p class="q-number">Question 1 of 3</p>
             <p class="q-text">What sport or activity do you most want to do?</p>
             <div class="options" id="q1-options">
-                <label class="option-label" onclick="selectOption(1,'running','Running / Athletics','🏃')">
+                <label class="option-label" onclick="selectOption(1,'running','Running / Athletics','🏃',this)">
                     <input type="radio" name="q1" value="running">
                     <span class="option-dot"></span>
                     <span class="option-icon">🏃</span> Running &amp; Athletics
                 </label>
-                <label class="option-label" onclick="selectOption(1,'boarding','Board Sports (snowboard / skateboard)','🏂')">
+                <label class="option-label" onclick="selectOption(1,'boarding','Board Sports (snowboard / skateboard)','🏂',this)">
                     <input type="radio" name="q1" value="boarding">
                     <span class="option-dot"></span>
                     <span class="option-icon">🏂</span> Board Sports (snowboard / skateboard)
                 </label>
-                <label class="option-label" onclick="selectOption(1,'cycling','Cycling','🚴')">
+                <label class="option-label" onclick="selectOption(1,'cycling','Cycling','🚴',this)">
                     <input type="radio" name="q1" value="cycling">
                     <span class="option-dot"></span>
                     <span class="option-icon">🚴</span> Cycling
                 </label>
-                <label class="option-label" onclick="selectOption(1,'other','Other / Multiple sports','⚽')">
+                <label class="option-label" onclick="selectOption(1,'other','Other / Multiple sports','⚽',this)">
                     <input type="radio" name="q1" value="other">
                     <span class="option-dot"></span>
                     <span class="option-icon">⚽</span> Other / Multiple sports
@@ -456,22 +456,22 @@
             <p class="q-number">Question 2 of 3</p>
             <p class="q-text">Which limb are you missing?</p>
             <div class="options" id="q2-options">
-                <label class="option-label" onclick="selectOption(2,'below-knee','Below the knee','🦵')">
+                <label class="option-label" onclick="selectOption(2,'below-knee','Below the knee','🦵',this)">
                     <input type="radio" name="q2" value="below-knee">
                     <span class="option-dot"></span>
                     <span class="option-icon">🦵</span> Below the knee
                 </label>
-                <label class="option-label" onclick="selectOption(2,'above-knee','Above the knee','🦿')">
+                <label class="option-label" onclick="selectOption(2,'above-knee','Above the knee','🦿',this)">
                     <input type="radio" name="q2" value="above-knee">
                     <span class="option-dot"></span>
                     <span class="option-icon">🦿</span> Above the knee
                 </label>
-                <label class="option-label" onclick="selectOption(2,'arm','Arm / upper limb','💪')">
+                <label class="option-label" onclick="selectOption(2,'arm','Arm / upper limb','💪',this)">
                     <input type="radio" name="q2" value="arm">
                     <span class="option-dot"></span>
                     <span class="option-icon">💪</span> Arm / upper limb
                 </label>
-                <label class="option-label" onclick="selectOption(2,'other','Other / Multiple','➕')">
+                <label class="option-label" onclick="selectOption(2,'other','Other / Multiple','➕',this)">
                     <input type="radio" name="q2" value="other">
                     <span class="option-dot"></span>
                     <span class="option-icon">➕</span> Other / Multiple
@@ -484,22 +484,22 @@
             <p class="q-number">Question 3 of 3</p>
             <p class="q-text">Where are you based?</p>
             <div class="options" id="q3-options">
-                <label class="option-label" onclick="selectOption(3,'rwanda','Rwanda','🇷🇼')">
+                <label class="option-label" onclick="selectOption(3,'rwanda','Rwanda','🇷🇼',this)">
                     <input type="radio" name="q3" value="rwanda">
                     <span class="option-dot"></span>
                     <span class="option-icon">🇷🇼</span> Rwanda
                 </label>
-                <label class="option-label" onclick="selectOption(3,'uganda','Uganda','🇺🇬')">
+                <label class="option-label" onclick="selectOption(3,'uganda','Uganda','🇺🇬',this)">
                     <input type="radio" name="q3" value="uganda">
                     <span class="option-dot"></span>
                     <span class="option-icon">🇺🇬</span> Uganda
                 </label>
-                <label class="option-label" onclick="selectOption(3,'kenya','Kenya','🇰🇪')">
+                <label class="option-label" onclick="selectOption(3,'kenya','Kenya','🇰🇪',this)">
                     <input type="radio" name="q3" value="kenya">
                     <span class="option-dot"></span>
                     <span class="option-icon">🇰🇪</span> Kenya
                 </label>
-                <label class="option-label" onclick="selectOption(3,'other','Somewhere else','🌍')">
+                <label class="option-label" onclick="selectOption(3,'other','Somewhere else','🌍',this)">
                     <input type="radio" name="q3" value="other">
                     <span class="option-dot"></span>
                     <span class="option-icon">🌍</span> Somewhere else
@@ -766,14 +766,14 @@
     }
 
     // ===== OPTION SELECTION =====
-    function selectOption(q, value, label, icon) {
+    function selectOption(q, value, label, icon, el) {
         answers['q' + q] = { value, label, icon };
 
         // Update visual state
-        document.querySelectorAll(`#q${q}-options .option-label`).forEach(el => {
-            el.classList.remove('selected');
+        document.querySelectorAll(`#q${q}-options .option-label`).forEach(opt => {
+            opt.classList.remove('selected');
         });
-        event.currentTarget.classList.add('selected');
+        el.classList.add('selected');
 
         // Mark card answered
         document.getElementById(`qcard-${q}`).classList.add('answered');
@@ -845,7 +845,7 @@
             body = `Above-knee fittings require a more detailed clinical assessment — but we have above-knee athletes in our pilot programme across ${answers.q3.label}. Your fitting partner will conduct a full assessment before recommending a configuration.`;
         } else {
             icon = '🔶';
-            sub = 'Let's talk about your situation';
+            sub = "Let's talk about your situation";
             title = 'Every case is different.';
             deviceName = 'Personalised Assessment Required';
             deviceDesc = 'Your fitting partner will conduct a full assessment and recommend the best configuration for your specific situation.';
