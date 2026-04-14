@@ -23,18 +23,28 @@
 
 MagnaStep's artefacts carry significant regulatory exposure across four overlapping regimes. The most acute risk is EU MDR 2017/745: marketing a Class IIb medical device without CE marking or a disclosed regulatory pathway is unlawful in Ireland and across the EU — this is a pre-condition of market entry, not a disclosure gap. GDPR exposure is substantial given the collection of special-category health data without explicit Art. 9 consent. The EU AI Act adds a third layer if any AI system processes health data to generate clinical recommendations. The fictional testimonial and simulated data create secondary consumer law risk under the Irish CPA 2007. None are fatal; all must be resolved before public-facing deployment.
 
+**Jurisdictional note:** As a Rwanda-headquartered company targeting East African markets, MagnaStep's directly applicable data protection laws are Rwanda Law No. 058/2021 (overseen by the National Cyber Security Authority), Uganda's Data Protection and Privacy Act 2019, and Kenya's Data Protection Act 2019 — all modelled on GDPR principles. EU MDR applies upon any EU export, as stated in the business plan. GDPR and the EU AI Act are cited above as internationally recognised benchmark frameworks and because their obligations would be triggered immediately upon European market entry or investor engagement.
+
+### AI Technology Classification and Customer Lifecycle (LO2 / LO3)
+
+The self-assessment in `prototype.html` is a **rule-based recommender system**: it takes three categorical inputs (sport type, limb type, country) and maps them deterministically to a pre-defined result card. It is not collaborative filtering ("users like you also chose..."), not content-based filtering, and not LLM-powered — there is no learning, no user profile, and no probabilistic inference. This distinction has two practical consequences:
+
+**EU AI Act exposure:** A deterministic rule-based system carries lower EU AI Act risk than an LLM-powered agent making probabilistic health recommendations. The Part A finding (Annex III high-risk) applies to the *intended* production system; the current prototype, being deterministic, would more likely fall under the limited-risk tier (Art. 50 transparency obligations only). This distinction matters for the regulatory roadmap in Part F — it means the alpha prototype can be shown to users with a transparency notice, whereas a live AI-powered version would require full Annex III compliance before deployment.
+
+**Customer lifecycle coverage:** Mapped against the attract → engage → persuade → retain lifecycle (Sterne, 2017), MagnaStep's current AI stack is minimal. At *Attract*, the landing page relies on narrative and social proof — no AI personalisation. At *Engage*, the self-assessment provides basic rule-based matching. At *Persuade*, the partner finder is a static filtered list. At *Retain*, no AI technology is deployed at all. This is appropriate for an alpha, but the full product vision described in the pitch deck would require an LLM-powered conversational assessment tool, dynamic partner availability APIs, and a CRM-integrated retention layer before the CE lifecycle is fully AI-supported.
+
 ---
 
 ## Part B: Trust Transfer Audit
 
-Reading `index.html` and `prototype.html` as a prospective customer — a 19-year-old below-knee amputee in Kigali with sporting ambitions and no prior knowledge of MagnaStep:
+Reading `index.html`, `pitch.html`, and `prototype.html` as a prospective customer — a 19-year-old below-knee amputee in Kigali with sporting ambitions and no prior knowledge of MagnaStep:
 
 **Moment 1**
 
 > *"Rwanda Disability Board Rehab Centre… +250 788 000 001… Next slot: 3 days"*
 > — `prototype.html`, Partner Finder, panel 3
 
-**Trust collapses here because:** A user in genuine medical need who calls this number and reaches nothing — or the wrong person — will not just be disappointed; they will conclude that MagnaStep is not real, and they will tell others in their community the same. In a market where trust is built through personal referral, a single dead phone number destroys credibility that would take months to rebuild.
+**Trust collapses here because:** A user in genuine medical need who calls this number and reaches nothing — or the wrong person — will not just be disappointed; they will conclude that MagnaStep is not real, and they will tell others in their community the same. In a market where trust is built through personal referral, a single dead phone number destroys credibility that would take months to rebuild. This is the Trust Transfer Problem in action: the user's trust in MagnaStep transfers — in full — onto the partner data presented, and a single failure point collapses the entire chain.
 
 ---
 
@@ -43,7 +53,7 @@ Reading `index.html` and `prototype.html` as a prospective customer — a 19-yea
 > *'"I always assumed that world wasn't for me. MagnaStep made me realise the only thing holding me back was access."*
 > — `index.html`, story section (Amara's quote)
 
-**Trust collapses here because:** If a user — particularly one who has sought out MagnaStep through a disability services partner or word of mouth — discovers that Amara is fictional, the emotional foundation of the entire landing page collapses; a product that opens with a fabricated story about a disabled person immediately raises the question of what else has been fabricated.
+**Trust collapses here because:** If a user — particularly one who has sought out MagnaStep through a disability services partner or word of mouth — discovers that Amara is fictional, the emotional foundation of the entire landing page collapses; a product that opens with a fabricated story about a disabled person immediately raises the question of what else has been fabricated. This is the dynamic Weinberger (2019) identifies in the context of AI-generated content: when a system sounds too human, too personal, trust collapse on discovery is not gradual — it is immediate and proportionate to the intimacy of the original claim. The more convincingly Amara's story was told, the more damaging the revelation that she does not exist.
 
 ---
 
@@ -61,7 +71,20 @@ Reading `index.html` and `prototype.html` as a prospective customer — a 19-yea
 > *"All prices are indicative targets for the alpha programme. MagnaStep is committed to ensuring that income is never a barrier to access."*
 > — `index.html`, pricing section footer note
 
-**Trust collapses here because:** A user who has read the pricing section carefully — who has identified themselves as likely needing the subsidised tier — and then reads "indicative targets" in small print will immediately question whether the subsidised access offer is real or aspirational; for someone making a life-changing medical decision, "indicative" is not good enough, and the gap between the bold commitment above and the hedge below is exactly the kind of inconsistency that destroys trust at the point of conversion.
+**Trust collapses here because:** A user who has read the pricing section carefully — who has identified themselves as likely needing the subsidised tier — and then reads "indicative targets" in small print will immediately question whether the subsidised access offer is real or aspirational; for someone making a life-changing medical decision, "indicative" is not good enough, and the gap between the bold commitment above and the hedge below is exactly the kind of inconsistency that destroys trust at the point of conversion. Fogg's Behaviour Model (2010) explains the mechanism precisely: the user's motivation is high (genuine medical need), their ability is high (the CTA is visible and accessible), but the prompt is self-undermining — the small-print hedge fires at the exact moment the user is ready to act, introducing doubt rather than confidence. A well-designed customer engagement system removes friction at the conversion moment; this page creates it.
+
+### Trust Failures Mapped to Sashi's Engagement Cycle
+
+Mapped against Sashi's (2012) 7-stage customer engagement cycle, each trust collapse moment intervenes at a specific and damaging transition:
+
+| Moment | Trust Collapse | Sashi Stage Broken |
+|--------|---------------|-------------------|
+| 1 — Dead phone number | User acts on partner data; reaches nothing | Connection → Interaction |
+| 2 — Fictional testimonial | User discovers Amara is not real | Interaction → Satisfaction |
+| 3 — Fictional team (pitch.html) | Investor cannot verify founding team | Connection → Interaction (investor journey) |
+| 4 — Pricing hedge | User ready to convert; small print creates doubt | Satisfaction → Retention |
+
+In each case, the failure occurs at a transition point — not within a stage, but between them. This reflects the broader principle that customer engagement systems are most fragile at handoffs, not at stable states. For MagnaStep, where community trust is the primary go-to-market asset, a failure at any of these transitions is not recoverable through marketing spend — it requires rebuilding the underlying artefact.
 
 ---
 
@@ -130,14 +153,18 @@ Both `index.html` and `pitch.html` have been updated to:
 
 **Prototype URL:** https://jenuineprojects.github.io/x24317713-innovator-critique/prototype.html
 
-**Commit hash:** `8289e29`
+**Commit hash:** `ee1522b`
 
 `prototype.html` is a working alpha prototype demonstrating the core value proposition through four interactive panels:
 
 1. **Amara's Story** — scrolling narrative with visual beat cards
 2. **Self-Assessment** — three-question tool producing a personalised result card (12+ response combinations based on sport, limb type, and country); out-of-region users receive a waitlist card; answers auto-prefill the registration form
 3. **Partner Finder** — filterable list of fitting partners by country (Rwanda, Uganda, Kenya) with simulated availability slots
-4. **Registration Form** — captures name, email, phone, country, activity, and a message field; includes GDPR consent checkbox; on submission generates a unique reference number (MGS-XXXX) and displays a confirmation screen
+4. **Registration Form** — captures name, email, phone, country, activity, and a message field; on submission generates a unique reference number (MGS-XXXX) and displays a confirmation screen
+
+Regulatory fixes applied directly to the prototype in response to Part A findings:
+- **Alpha disclaimer banner** added at top of page: *"Partner details, phone numbers, and availability shown in this tool are simulated and not live. Do not call any numbers shown."*
+- **GDPR consent split into two separate required checkboxes:** (1) explicit Art. 9 health data consent for limb status collected in self-assessment; (2) separate contact/marketing consent — each independently required before form submission
 
 The prototype runs entirely in vanilla JavaScript with no backend. Form data logs to the browser console on submission. All interactions are functional — no static mockup elements.
 
@@ -151,7 +178,7 @@ The €2M seed offer is real. The problem is real. Amara is fictional but the 1�
 
 Three lines of evidence converge on the same answer (full detail in Appendix A). A red-team investor immediately identified that the pitch describes a concept, not a manufactured product — no prototype exists in clinically testable form. A simulated EU MDR regulator confirmed that commercial fitting of a Class IIb device without CE certification is unlawful before the first patient is touched. A target user in Kigali noted that a dead phone number ends referral-based trust permanently in a community that runs on word of mouth.
 
-A pre-mortem surfaces the single most likely failure mode: MagnaStep ships at 90 days, an adverse fitting event on a 17-year-old athlete generates press, and disability service partners withdraw. The company never recovers community trust. Scenario analysis confirms: shipping without regulatory clearance generates an MDR enforcement notice within 60 days. Shipping at 180 days with conditions met generates 50 pilot fittings and a viable path to Series A.
+A pre-mortem surfaces the single most likely failure mode: MagnaStep ships at 90 days, an adverse fitting event on a 17-year-old athlete generates press, and disability service partners withdraw. The company never recovers community trust. Sashi's (2012) customer engagement cycle makes this risk concrete — MagnaStep's customers must move from Connection through Satisfaction to Commitment and Advocacy if the model is to work. A single clinical failure before Satisfaction is established collapses the entire cycle; in a referral-driven market, there is no re-entry point. Scenario analysis confirms: shipping without regulatory clearance generates an MDR enforcement notice within 60 days. Shipping at 180 days with conditions met generates 50 pilot fittings and a viable path to Series A.
 
 **Five non-negotiable conditions before first fitting:**
 
@@ -260,8 +287,8 @@ These are not conditions designed to delay. They are the minimum required to ens
 | 50 pilot athletes fitted | Day 165 |
 | Interim clinical outcomes report (10-athlete cohort) | Day 150 |
 | Uganda partner MOU signed | Day 110 |
-| prototype.html updated with real partner data | Day 120 |
-| Second commit to GitHub with video + real partner data | Day 120 |
+| prototype.html updated with real partner data and live disclaimer | Day 120 |
+| Second commit to GitHub with real partner data | Day 120 |
 
 #### Go-to-Market Spend (Days 91–180)
 
@@ -279,7 +306,7 @@ These are not conditions designed to delay. They are the minimum required to ens
 | Action | Owner | Deadline |
 |--------|-------|----------|
 | CE marking application submitted to Notified Body | Regulatory Consultant | Day 150 |
-| GDPR DPIA completed and filed with DPC (Ireland) | Legal counsel | Day 100 |
+| DPIA completed; filed with Rwanda NCSA (data protection authority) | Legal counsel | Day 100 |
 | Rwanda FDA pre-submission meeting | Clinical Lead + CEO | Day 110 |
 | Real privacy policy live on all pages | Legal counsel | Day 95 |
 
@@ -308,4 +335,4 @@ These are not conditions designed to delay. They are the minimum required to ens
 
 ---
 
-*This critique was produced as part of the H9CEAI Innovator Critique assessment, National College of Ireland, MSc AI in Business, April 2026. Student ID: x24317713. AI tools were used throughout in partnership with the student's own critical analysis and judgement.*
+*This critique was produced as part of the H9CEAI Innovator Critique assessment, National College of Ireland, MSc AI in Business, April 2026. Student ID: x24317713. AI tools used: Claude (Anthropic) for pipeline execution, code generation, regulatory analysis, and critique drafting; Gemini (Google) for hero image generation (Imagen) and video concept development. All AI outputs were reviewed, corrected, and critically evaluated by the student at every stage — including identification and correction of AI hallucinations documented in Part C.*
