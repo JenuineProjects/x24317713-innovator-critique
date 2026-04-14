@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MagnaStep — Find Your Path</title>
+    <meta name="description" content="Find out if MagnaStep is right for you. Interactive self-assessment, partner finder, and registration.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧲</text></svg>">
+    <style>
+        :root {
+            --terracotta: #C8553D;
+            --terracotta-light: #E8704A;
+            --terracotta-dark: #A0402C;
+            --green: #2D6A4F;
+            --green-light: #3D8A65;
+            --green-dark: #1A3D2B;
+            --cream: #FDF6F0;
+            --white: #FFFFFF;
+            --dark: #1A1A1A;
+            --grey: #6B7280;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; color: var(--dark); background: var(--cream); line-height: 1.6; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+        img { max-width: 100%; height: auto; display: block; }
+        a { color: inherit; text-decoration: none; }
+
+        /* NAV */
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 2rem;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+        }
+        .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--green); }
+        .nav-logo span { color: var(--terracotta); }
+        .nav-tag { background: var(--terracotta); color: white; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 0.9rem; border-radius: 50px; }
+        .nav-back { font-size: 0.85rem; color: var(--grey); font-weight: 500; }
+        .nav-back:hover { color: var(--terracotta); }
+
+        /* HERO */
+        .proto-hero {
+            background: var(--green-dark);
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .proto-hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=1200&q=60');
+            background-size: cover; background-position: center;
+            opacity: 0.15;
+        }
+        .proto-hero-content { position: relative; z-index: 2; max-width: 640px; margin: 0 auto; }
+        .proto-tag { display: inline-block; background: var(--terracotta); color: white; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.35rem 1rem; border-radius: 50px; margin-bottom: 1.25rem; }
+        .proto-hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); color: white; font-weight: 900; margin-bottom: 1rem; }
+        .proto-hero h1 em { color: var(--terracotta-light); font-style: italic; }
+        .proto-hero p { font-size: 1.05rem; color: rgba(255,255,255,0.72); font-weight: 300; max-width: 480px; margin: 0 auto; }
+
+        /* STEPS NAV */
+        .steps-nav {
+            display: flex; justify-content: center; gap: 0;
+            background: white; border-bottom: 1px solid rgba(0,0,0,0.07);
+            overflow-x: auto;
+        }
+        .step-btn {
+            padding: 1rem 1.5rem; font-size: 0.82rem; font-weight: 600;
+            color: var(--grey); border: none; background: none; cursor: pointer;
+            border-bottom: 3px solid transparent; transition: all 0.2s;
+            white-space: nowrap; font-family: 'Inter', sans-serif;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .step-btn.active { color: var(--terracotta); border-bottom-color: var(--terracotta); }
+        .step-btn.completed { color: var(--green); }
+        .step-num {
+            width: 22px; height: 22px; border-radius: 50%;
+            background: rgba(0,0,0,0.08); color: var(--grey);
+            font-size: 0.72rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .step-btn.active .step-num { background: var(--terracotta); color: white; }
+        .step-btn.completed .step-num { background: var(--green); color: white; }
+
+        /* MAIN CONTENT */
+        main { max-width: 760px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+        /* PANELS */
+        .panel { display: none; }
+        .panel.active { display: block; }
+
+        /* ========== PANEL 1: AMARA'S STORY ========== */
+        .story-card {
+            background: white; border-radius: 1.25rem;
+            overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            margin-bottom: 1.5rem;
+        }
+        .story-img { height: 280px; overflow: hidden; }
+        .story-img img { width: 100%; height: 100%; object-fit: cover; }
+        .story-body-inner { padding: 2rem; }
+        .story-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 0.75rem; }
+        .story-body-inner h2 { font-size: 1.8rem; color: var(--green-dark); margin-bottom: 1rem; }
+        .story-quote-block {
+            border-left: 3px solid var(--terracotta); padding-left: 1.25rem;
+            margin: 1.25rem 0; font-family: 'Playfair Display', serif;
+            font-size: 1.1rem; font-style: italic; color: var(--green-dark); line-height: 1.55;
+        }
+        .story-text { font-size: 0.95rem; color: var(--grey); line-height: 1.85; }
+        .story-text p + p { margin-top: 0.9rem; }
+
+        .story-beats {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 1rem; margin-bottom: 1.5rem;
+        }
+        .beat-card {
+            background: white; border-radius: 1rem; padding: 1.5rem;
+            text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-top: 3px solid var(--terracotta);
+        }
+        .beat-icon { font-size: 1.75rem; margin-bottom: 0.6rem; }
+        .beat-card h3 { font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 700; color: var(--green-dark); margin-bottom: 0.3rem; }
+        .beat-card p { font-size: 0.8rem; color: var(--grey); line-height: 1.5; }
+
+        /* ========== PANEL 2: SELF-ASSESSMENT ========== */
+        .assessment-header { text-align: center; margin-bottom: 2.5rem; }
+        .assessment-header h2 { font-size: 2rem; color: var(--green-dark); margin-bottom: 0.5rem; }
+        .assessment-header p { font-size: 0.95rem; color: var(--grey); }
+
+        .question-card {
+            background: white; border-radius: 1.25rem; padding: 2rem;
+            margin-bottom: 1.25rem; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-left: 4px solid transparent; transition: border-color 0.2s;
+        }
+        .question-card.answered { border-left-color: var(--green); }
+        .q-number { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 0.6rem; }
+        .q-text { font-size: 1.05rem; font-weight: 600; color: var(--dark); margin-bottom: 1.25rem; }
+        .options { display: flex; flex-direction: column; gap: 0.6rem; }
+        .option-label {
+            display: flex; align-items: center; gap: 0.9rem;
+            padding: 0.85rem 1.1rem; border-radius: 0.75rem;
+            border: 2px solid rgba(0,0,0,0.08); cursor: pointer;
+            font-size: 0.92rem; color: var(--dark); font-weight: 500;
+            transition: all 0.15s; background: var(--cream);
+        }
+        .option-label:hover { border-color: var(--terracotta); background: white; }
+        .option-label input[type="radio"] { display: none; }
+        .option-label.selected { border-color: var(--green); background: white; color: var(--green-dark); }
+        .option-label.selected .option-dot { background: var(--green); border-color: var(--green); }
+        .option-dot {
+            width: 18px; height: 18px; border-radius: 50%;
+            border: 2px solid rgba(0,0,0,0.2); flex-shrink: 0;
+            transition: all 0.15s;
+        }
+        .option-icon { font-size: 1.1rem; }
+
+        .assess-btn {
+            width: 100%; padding: 1rem; border-radius: 0.75rem;
+            background: var(--terracotta); color: white;
+            font-size: 1rem; font-weight: 700; border: none; cursor: pointer;
+            margin-top: 1.25rem; transition: all 0.2s; font-family: 'Inter', sans-serif;
+            opacity: 0.45; pointer-events: none;
+        }
+        .assess-btn.ready { opacity: 1; pointer-events: all; }
+        .assess-btn.ready:hover { background: var(--terracotta-light); transform: translateY(-1px); }
+
+        /* RESULT CARD */
+        .result-card {
+            display: none;
+            background: var(--green-dark); border-radius: 1.25rem;
+            padding: 2.5rem; margin-top: 1.5rem; color: white;
+        }
+        .result-card.visible { display: block; }
+        .result-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .result-icon { font-size: 2.5rem; }
+        .result-title { font-size: 1.5rem; color: white; }
+        .result-sub { font-size: 0.88rem; color: var(--terracotta-light); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.3rem; }
+        .result-body { font-size: 0.95rem; color: rgba(255,255,255,0.78); line-height: 1.75; margin-bottom: 1.5rem; }
+        .result-device {
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 1.5rem;
+        }
+        .result-device-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--terracotta-light); margin-bottom: 0.5rem; }
+        .result-device-name { font-size: 1.05rem; font-weight: 700; color: white; }
+        .result-device-desc { font-size: 0.85rem; color: rgba(255,255,255,0.55); margin-top: 0.25rem; }
+        .result-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        .btn-result-primary {
+            background: var(--terracotta); color: white; padding: 0.85rem 1.75rem;
+            border-radius: 50px; font-weight: 700; font-size: 0.9rem; border: none;
+            cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;
+        }
+        .btn-result-primary:hover { background: var(--terracotta-light); }
+        .btn-result-secondary {
+            background: transparent; color: white; padding: 0.85rem 1.75rem;
+            border-radius: 50px; font-weight: 600; font-size: 0.9rem;
+            border: 2px solid rgba(255,255,255,0.3); cursor: pointer;
+            transition: all 0.2s; font-family: 'Inter', sans-serif;
+        }
+        .btn-result-secondary:hover { border-color: white; }
+
+        .waitlist-card {
+            display: none;
+            background: #2A2A2A; border-radius: 1.25rem;
+            padding: 2.5rem; margin-top: 1.5rem; color: white;
+            text-align: center;
+        }
+        .waitlist-card.visible { display: block; }
+        .waitlist-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .waitlist-card h3 { font-size: 1.4rem; color: white; margin-bottom: 0.75rem; }
+        .waitlist-card p { font-size: 0.95rem; color: rgba(255,255,255,0.6); line-height: 1.7; max-width: 440px; margin: 0 auto 1.5rem; }
+
+        /* ========== PANEL 3: PARTNER FINDER ========== */
+        .finder-header { text-align: center; margin-bottom: 2rem; }
+        .finder-header h2 { font-size: 2rem; color: var(--green-dark); margin-bottom: 0.5rem; }
+        .finder-header p { font-size: 0.95rem; color: var(--grey); }
+
+        .filter-row { display: flex; gap: 0.6rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center; }
+        .filter-btn {
+            padding: 0.55rem 1.25rem; border-radius: 50px;
+            border: 2px solid rgba(0,0,0,0.1); background: white;
+            font-size: 0.85rem; font-weight: 600; color: var(--grey);
+            cursor: pointer; transition: all 0.15s; font-family: 'Inter', sans-serif;
+        }
+        .filter-btn.active { border-color: var(--green); background: var(--green); color: white; }
+        .filter-btn:hover:not(.active) { border-color: var(--green); color: var(--green); }
+
+        .partners-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .partner-card {
+            background: white; border-radius: 1rem; padding: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-top: 3px solid var(--green);
+        }
+        .partner-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.1); }
+        .partner-card[data-country="Uganda"] { border-top-color: var(--terracotta); }
+        .partner-card[data-country="Kenya"] { border-top-color: #6366F1; }
+        .partner-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+        .partner-country { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); }
+        .partner-slot { font-size: 0.72rem; font-weight: 700; color: var(--green); background: rgba(45,106,79,0.1); padding: 0.2rem 0.6rem; border-radius: 50px; }
+        .partner-slot.busy { color: var(--terracotta); background: rgba(200,85,61,0.1); }
+        .partner-card h3 { font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--dark); margin-bottom: 0.3rem; }
+        .partner-location { font-size: 0.82rem; color: var(--grey); margin-bottom: 0.75rem; }
+        .partner-langs { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .lang-tag { font-size: 0.72rem; background: var(--cream); color: var(--dark); padding: 0.2rem 0.6rem; border-radius: 50px; font-weight: 500; }
+        .partner-contact {
+            font-size: 0.82rem; color: var(--terracotta); font-weight: 600;
+            display: flex; align-items: center; gap: 0.4rem;
+        }
+        .partner-card.hidden { display: none; }
+
+        .no-results { text-align: center; padding: 3rem; color: var(--grey); font-size: 0.95rem; display: none; }
+
+        /* ========== PANEL 4: REGISTER ========== */
+        .register-header { text-align: center; margin-bottom: 2.5rem; }
+        .register-header h2 { font-size: 2rem; color: var(--green-dark); margin-bottom: 0.5rem; }
+        .register-header p { font-size: 0.95rem; color: var(--grey); }
+
+        .form-card {
+            background: white; border-radius: 1.25rem; padding: 2rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+        }
+        .form-row { margin-bottom: 1.25rem; }
+        .form-row label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 0.45rem; }
+        .form-row input, .form-row select, .form-row textarea {
+            width: 100%; padding: 0.85rem 1rem; border-radius: 0.6rem;
+            border: 2px solid rgba(0,0,0,0.1); font-size: 0.92rem;
+            font-family: 'Inter', sans-serif; color: var(--dark);
+            background: var(--cream); transition: border-color 0.15s; outline: none;
+        }
+        .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--green); background: white; }
+        .form-row textarea { resize: vertical; min-height: 90px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .form-hint { font-size: 0.78rem; color: var(--grey); margin-top: 0.35rem; }
+
+        .gdpr-row {
+            display: flex; gap: 0.75rem; align-items: flex-start;
+            background: var(--cream); border-radius: 0.75rem; padding: 1rem;
+            margin-bottom: 1.25rem;
+        }
+        .gdpr-row input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; width: 16px; height: 16px; accent-color: var(--green); }
+        .gdpr-row label { font-size: 0.82rem; color: var(--grey); line-height: 1.55; cursor: pointer; }
+        .gdpr-row a { color: var(--terracotta); }
+
+        .submit-btn {
+            width: 100%; padding: 1.1rem; border-radius: 0.75rem;
+            background: var(--terracotta); color: white;
+            font-size: 1rem; font-weight: 700; border: none;
+            cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;
+        }
+        .submit-btn:hover { background: var(--terracotta-light); transform: translateY(-1px); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        /* SUCCESS STATE */
+        .success-card {
+            display: none; text-align: center; padding: 3rem 2rem;
+            background: white; border-radius: 1.25rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+        }
+        .success-card.visible { display: block; }
+        .success-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .success-card h3 { font-size: 1.6rem; color: var(--green-dark); margin-bottom: 0.75rem; }
+        .success-card p { font-size: 0.95rem; color: var(--grey); line-height: 1.7; max-width: 440px; margin: 0 auto 1.5rem; }
+        .success-ref { background: var(--cream); border-radius: 0.6rem; padding: 0.75rem 1.5rem; display: inline-block; font-family: monospace; font-size: 1rem; color: var(--green-dark); font-weight: 700; letter-spacing: 0.1em; }
+
+        /* NAV BUTTONS */
+        .panel-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; }
+        .btn-next {
+            background: var(--terracotta); color: white; padding: 0.85rem 2rem;
+            border-radius: 50px; font-weight: 700; font-size: 0.92rem;
+            border: none; cursor: pointer; transition: all 0.2s;
+            font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-next:hover { background: var(--terracotta-light); }
+        .btn-prev {
+            background: transparent; color: var(--grey); padding: 0.85rem 2rem;
+            border-radius: 50px; font-weight: 600; font-size: 0.92rem;
+            border: 2px solid rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-prev:hover { border-color: var(--grey); color: var(--dark); }
+
+        /* FOOTER */
+        footer { background: var(--dark); color: rgba(255,255,255,0.45); padding: 2rem; text-align: center; font-size: 0.8rem; line-height: 1.8; }
+        footer strong { color: white; }
+        footer a { color: rgba(255,255,255,0.45); text-decoration: underline; }
+
+        /* RESPONSIVE */
+        @media (max-width: 640px) {
+            .story-beats, .partners-grid, .form-grid { grid-template-columns: 1fr; }
+            main { padding: 2rem 1rem 4rem; }
+            .result-actions { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-logo">Magna<span>Step</span></div>
+    <a href="index.html" class="nav-back">← Back to main site</a>
+    <span class="nav-tag">Alpha Prototype</span>
+</nav>
+
+<!-- HERO -->
+<div class="proto-hero">
+    <div class="proto-hero-content">
+        <span class="proto-tag">Interactive Tool</span>
+        <h1>Find Your <em>Path.</em></h1>
+        <p>Answer three questions and we'll tell you exactly what MagnaStep can do for you, which device fits your sport, and who your nearest fitting partner is.</p>
+    </div>
+</div>
+
+<!-- STEP NAVIGATION -->
+<div class="steps-nav">
+    <button class="step-btn active" data-panel="0" onclick="goToPanel(0)">
+        <span class="step-num">1</span> Amara's Story
+    </button>
+    <button class="step-btn" data-panel="1" onclick="goToPanel(1)">
+        <span class="step-num">2</span> Is MagnaStep for you?
+    </button>
+    <button class="step-btn" data-panel="2" onclick="goToPanel(2)">
+        <span class="step-num">3</span> Find a Partner
+    </button>
+    <button class="step-btn" data-panel="3" onclick="goToPanel(3)">
+        <span class="step-num">4</span> Register Interest
+    </button>
+</div>
+
+<main>
+
+    <!-- ===== PANEL 1: AMARA'S STORY ===== -->
+    <div class="panel active" id="panel-0">
+        <div class="story-card">
+            <div class="story-img">
+                <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=760&q=80" alt="Young woman in Rwanda">
+            </div>
+            <div class="story-body-inner">
+                <p class="story-label">Our Inspiration</p>
+                <h2>Meet Amara.</h2>
+                <div class="story-quote-block">"I always assumed that world wasn't for me. MagnaStep made me realise the only thing holding me back was access."</div>
+                <div class="story-text">
+                    <p>Amara grew up tending her family's tomato farm in the hills of Rwanda. She lost her leg as a child. Every evening she'd watch snowboarders on her phone — that mix of speed and freedom — and quietly let the dream go.</p>
+                    <p>Then she heard about magnetic osseointegration: prosthetics responsive enough for dynamic sport. The technology existed. It cost $70,000 and was only available in Europe. For Amara, it might as well have been on another planet.</p>
+                    <p>MagnaStep was built for Amara. And for the thousands like her across Rwanda, Uganda, and Kenya whose aspiration has always been bigger than their access.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="story-beats">
+            <div class="beat-card">
+                <div class="beat-icon">🌱</div>
+                <h3>The Farm</h3>
+                <p>Tomato fields, Rwanda hills. A life of physical work — and a dream held quietly.</p>
+            </div>
+            <div class="beat-card">
+                <div class="beat-icon">🧲</div>
+                <h3>The Discovery</h3>
+                <p>Magnetic prosthetics exist. But $70,000 and a flight to Europe is not access — it's a wall.</p>
+            </div>
+            <div class="beat-card">
+                <div class="beat-icon">🏂</div>
+                <h3>The First Run</h3>
+                <p>MagnaStep. $3,000. Local fitting. The slope was steep. She went anyway.</p>
+            </div>
+        </div>
+
+        <div class="panel-nav">
+            <div></div>
+            <button class="btn-next" onclick="goToPanel(1)">Is MagnaStep for you? →</button>
+        </div>
+    </div>
+
+    <!-- ===== PANEL 2: SELF-ASSESSMENT ===== -->
+    <div class="panel" id="panel-1">
+        <div class="assessment-header">
+            <h2>Is MagnaStep right for you?</h2>
+            <p>Three questions. A personalised answer in under a minute.</p>
+        </div>
+
+        <!-- Q1 -->
+        <div class="question-card" id="qcard-1">
+            <p class="q-number">Question 1 of 3</p>
+            <p class="q-text">What sport or activity do you most want to do?</p>
+            <div class="options" id="q1-options">
+                <label class="option-label" onclick="selectOption(1,'running','Running / Athletics','🏃')">
+                    <input type="radio" name="q1" value="running">
+                    <span class="option-dot"></span>
+                    <span class="option-icon">🏃</span> Running &amp; Athletics
+                </label>
+                <label class="option-label" onclick="selectOption(1,'boarding','Board Sports (snowboard / skateboard)','🏂')">
+                    <input type="radio" name="q1" value="boarding">
+                    <span class="option-dot"></span>
+                    <span class="option-icon">🏂</span> Board Sports (snowboard / skateboard)
+                </label>
+                <label class="option-label" onclick="selectOption(1,'cycling','Cycling','🚴')">
+                    <input type="radio" name="q1" value="cycling">
+                    <span class="option-dot"></span>
+                    <span class="option-icon">🚴</span> Cycling
+                </label>
+                <label class="option-label" onclick="selectOption(1,'other','Other / Multiple sports','⚽')">
+                    <input type="radio" name="q1" value="other">
+                    <span class="option-dot"></span>
+                    <span class="option-icon">⚽</span> Other / Multiple sports
+                </label>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="question-card" id="qcard-2">
+            <p class="q-number">Question 2 of 3</p>
+            <p class="q-text">Which limb are you missing?</p>
+            <div class="options" id="q2-options">
+                <label class="option-label" onclick="selectOption(2,'below-knee','Below the knee','🦵')">
+                    <input type="radio" name="q2" value="below-knee">
+                    <span class="option-dot"></span>
+                    <span class="option-icon">🦵</span> Below the knee
+                </label>
+                <label class="option-label" onclick="selectOption(2,'above-knee','Above the knee','🦿')">
+                    <input type="radio" name="q2" value="above-knee">
+                    <span class="option-dot"></span>
+                    <span class="option-icon">🦿</span> Above the knee
+                </label>
+                <label class="option-label" onclick="selectOption(2,'arm','Arm / upper limb','💪')">
+                    <input type="radio" name="q2" value="arm">
+                    <span class="option-dot"></span>
+                    <span class="option-icon">💪</span> Arm / upper limb
+                </label>
+                <label class="option-label" onclick="selectOption(2,'other','Other / Multiple','➕')">
+                    <input type="radio" name="q2" value="other">
+                    <span class="option-dot"></span>
+                    <span class="option-icon">➕</span> Other / Multiple
+                </label>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="question-card" id="qcard-3">
+            <p class="q-number">Question 3 of 3</p>
+            <p class="q-text">Where are you based?</p>
+            <div class="options" id="q3-options">
+                <label class="option-label" onclick="selectOption(3,'rwanda','Rwanda','🇷🇼')">
+                    <input type="radio" name="q3" value="rwanda">
+                    <span class="option-dot"></span>
+                    <span class="option-icon">🇷🇼</span> Rwanda
+                </label>
+                <label class="option-label" onclick="selectOption(3,'uganda','Uganda','🇺🇬')">
+                    <input type="radio" name="q3" value="uganda">
+                    <span class="option-dot"></span>
+                    <span class="option-icon">🇺🇬</span> Uganda
+                </label>
+                <label class="option-label" onclick="selectOption(3,'kenya','Kenya','🇰🇪')">
+                    <input type="radio" name="q3" value="kenya">
+                    <span class="option-dot"></span>
+                    <span class="option-icon">🇰🇪</span> Kenya
+                </label>
+                <label class="option-label" onclick="selectOption(3,'other','Somewhere else','🌍')">
+                    <input type="radio" name="q3" value="other">
+                    <span class="option-dot"></span>
+                    <span class="option-icon">🌍</span> Somewhere else
+                </label>
+            </div>
+        </div>
+
+        <button class="assess-btn" id="assess-btn" onclick="showResult()">See my personalised result →</button>
+
+        <!-- RESULT CARD (in-region) -->
+        <div class="result-card" id="result-card">
+            <div class="result-header">
+                <div class="result-icon" id="result-icon">✅</div>
+                <div>
+                    <div class="result-sub" id="result-sub">MagnaStep can help you</div>
+                    <h3 class="result-title" id="result-title">You're a strong match.</h3>
+                </div>
+            </div>
+            <p class="result-body" id="result-body"></p>
+            <div class="result-device" id="result-device">
+                <div class="result-device-label">Recommended device configuration</div>
+                <div class="result-device-name" id="result-device-name"></div>
+                <div class="result-device-desc" id="result-device-desc"></div>
+            </div>
+            <div class="result-actions">
+                <button class="btn-result-primary" onclick="goToPanel(2)">Find my fitting partner →</button>
+                <button class="btn-result-secondary" onclick="goToPanel(3)">Register my interest</button>
+            </div>
+        </div>
+
+        <!-- WAITLIST CARD (out of region) -->
+        <div class="waitlist-card" id="waitlist-card">
+            <div class="waitlist-icon">🌍</div>
+            <h3>We're coming. Be first to know.</h3>
+            <p>MagnaStep currently operates in Rwanda, Uganda, and Kenya. We're expanding fast. Register your interest and you'll be first to hear when we reach your area.</p>
+            <button class="btn-result-primary" onclick="goToPanel(3)">Join the waitlist →</button>
+        </div>
+
+        <div class="panel-nav">
+            <button class="btn-prev" onclick="goToPanel(0)">← Back</button>
+            <button class="btn-next" onclick="goToPanel(2)">Find a partner →</button>
+        </div>
+    </div>
+
+    <!-- ===== PANEL 3: PARTNER FINDER ===== -->
+    <div class="panel" id="panel-2">
+        <div class="finder-header">
+            <h2>Find your fitting partner.</h2>
+            <p>Your nearest centre is closer than you think. Filter by country to find available appointments.</p>
+        </div>
+
+        <div class="filter-row">
+            <button class="filter-btn active" onclick="filterPartners('all', this)">All countries</button>
+            <button class="filter-btn" onclick="filterPartners('Rwanda', this)">🇷🇼 Rwanda</button>
+            <button class="filter-btn" onclick="filterPartners('Uganda', this)">🇺🇬 Uganda</button>
+            <button class="filter-btn" onclick="filterPartners('Kenya', this)">🇰🇪 Kenya</button>
+        </div>
+
+        <div class="partners-grid" id="partners-grid">
+            <div class="partner-card" data-country="Rwanda">
+                <div class="partner-top">
+                    <span class="partner-country">Rwanda</span>
+                    <span class="partner-slot">Next slot: 3 days</span>
+                </div>
+                <h3>Rwanda Disability Board Rehab Centre</h3>
+                <p class="partner-location">📍 Kigali, Gasabo District</p>
+                <div class="partner-langs">
+                    <span class="lang-tag">Kinyarwanda</span>
+                    <span class="lang-tag">English</span>
+                    <span class="lang-tag">French</span>
+                </div>
+                <div class="partner-contact">📞 +250 788 000 001</div>
+            </div>
+            <div class="partner-card" data-country="Rwanda">
+                <div class="partner-top">
+                    <span class="partner-country">Rwanda</span>
+                    <span class="partner-slot busy">Next slot: 2 weeks</span>
+                </div>
+                <h3>King Faisal Hospital Prosthetics Unit</h3>
+                <p class="partner-location">📍 Kigali, Nyarugenge</p>
+                <div class="partner-langs">
+                    <span class="lang-tag">Kinyarwanda</span>
+                    <span class="lang-tag">English</span>
+                </div>
+                <div class="partner-contact">📞 +250 788 000 002</div>
+            </div>
+            <div class="partner-card" data-country="Uganda">
+                <div class="partner-top">
+                    <span class="partner-country">Uganda</span>
+                    <span class="partner-slot">Next slot: 5 days</span>
+                </div>
+                <h3>UNAPD Kampala Rehabilitation Hub</h3>
+                <p class="partner-location">📍 Kampala, Nakawa Division</p>
+                <div class="partner-langs">
+                    <span class="lang-tag">Luganda</span>
+                    <span class="lang-tag">English</span>
+                    <span class="lang-tag">Swahili</span>
+                </div>
+                <div class="partner-contact">📞 +256 700 000 001</div>
+            </div>
+            <div class="partner-card" data-country="Uganda">
+                <div class="partner-top">
+                    <span class="partner-country">Uganda</span>
+                    <span class="partner-slot">Next slot: 1 week</span>
+                </div>
+                <h3>Mulago National Referral — Orthopaedics</h3>
+                <p class="partner-location">📍 Kampala, Mulago Hill</p>
+                <div class="partner-langs">
+                    <span class="lang-tag">English</span>
+                    <span class="lang-tag">Luganda</span>
+                </div>
+                <div class="partner-contact">📞 +256 700 000 002</div>
+            </div>
+            <div class="partner-card" data-country="Kenya">
+                <div class="partner-top">
+                    <span class="partner-country">Kenya</span>
+                    <span class="partner-slot">Next slot: 4 days</span>
+                </div>
+                <h3>Kenya National Disability Survey Clinic</h3>
+                <p class="partner-location">📍 Nairobi, Westlands</p>
+                <div class="partner-langs">
+                    <span class="lang-tag">Swahili</span>
+                    <span class="lang-tag">English</span>
+                </div>
+                <div class="partner-contact">📞 +254 700 000 001</div>
+            </div>
+            <div class="partner-card" data-country="Kenya">
+                <div class="partner-top">
+                    <span class="partner-country">Kenya</span>
+                    <span class="partner-slot busy">Next slot: 3 weeks</span>
+                </div>
+                <h3>Kenyatta National Hospital — Limb Unit</h3>
+                <p class="partner-location">📍 Nairobi, Upper Hill</p>
+                <div class="partner-langs">
+                    <span class="lang-tag">Swahili</span>
+                    <span class="lang-tag">English</span>
+                </div>
+                <div class="partner-contact">📞 +254 700 000 002</div>
+            </div>
+        </div>
+
+        <div class="no-results" id="no-results">No partners found for this filter.</div>
+
+        <div class="panel-nav">
+            <button class="btn-prev" onclick="goToPanel(1)">← Back</button>
+            <button class="btn-next" onclick="goToPanel(3)">Register interest →</button>
+        </div>
+    </div>
+
+    <!-- ===== PANEL 4: REGISTER INTEREST ===== -->
+    <div class="panel" id="panel-3">
+        <div class="register-header">
+            <h2>Take the next step.</h2>
+            <p>Register your interest and your nearest fitting partner will be in touch within 5 working days.</p>
+        </div>
+
+        <div class="form-card" id="form-card">
+            <form id="interest-form" onsubmit="submitForm(event)">
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label for="fname">First name *</label>
+                        <input type="text" id="fname" name="fname" placeholder="Amara" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="lname">Last name *</label>
+                        <input type="text" id="lname" name="lname" placeholder="Uwimana" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="email">Email address *</label>
+                    <input type="email" id="email" name="email" placeholder="amara@example.com" required>
+                </div>
+                <div class="form-row">
+                    <label for="phone">Phone / WhatsApp number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+250 7XX XXX XXX">
+                    <p class="form-hint">We'll send updates via WhatsApp if you provide a number.</p>
+                </div>
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label for="country">Country *</label>
+                        <select id="country" name="country" required>
+                            <option value="">Select your country</option>
+                            <option value="rwanda">Rwanda</option>
+                            <option value="uganda">Uganda</option>
+                            <option value="kenya">Kenya</option>
+                            <option value="other">Other — add to waitlist</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="activity">Sport / activity *</label>
+                        <select id="activity" name="activity" required>
+                            <option value="">Select your sport</option>
+                            <option value="running">Running / Athletics</option>
+                            <option value="boarding">Board sports</option>
+                            <option value="cycling">Cycling</option>
+                            <option value="football">Football</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="message">Anything else you'd like us to know? (optional)</label>
+                    <textarea id="message" name="message" placeholder="Tell us about your situation, your sport goals, or any questions you have..."></textarea>
+                </div>
+
+                <div class="gdpr-row">
+                    <input type="checkbox" id="gdpr" name="gdpr" required>
+                    <label for="gdpr">
+                        I agree that MagnaStep may store and use my details to contact me about my fitting enquiry. My data will not be shared with third parties without my consent. I can withdraw this consent at any time by emailing <a href="mailto:hello@magnastep.io">hello@magnastep.io</a>. See our <a href="#">Privacy Policy</a>.
+                    </label>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submit-btn">Register my interest →</button>
+            </form>
+        </div>
+
+        <!-- SUCCESS STATE -->
+        <div class="success-card" id="success-card">
+            <div class="success-icon">✅</div>
+            <h3>You're registered.</h3>
+            <p>Your nearest fitting partner will be in touch within 5 working days. Keep an eye on your email — and your WhatsApp if you provided a number.</p>
+            <p>Your reference number:</p>
+            <div class="success-ref" id="success-ref">MGS-XXXX</div>
+            <div style="margin-top:2rem;">
+                <button class="btn-next" onclick="goToPanel(0)" style="margin:0 auto;">← Start again</button>
+            </div>
+        </div>
+
+        <div class="panel-nav" id="register-nav">
+            <button class="btn-prev" onclick="goToPanel(2)">← Back</button>
+            <div></div>
+        </div>
+    </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+    <p><strong>MagnaStep</strong> — Alpha Prototype · Kigali, Rwanda</p>
+    <p style="margin-top:0.4rem;">
+        This is an alpha prototype for educational purposes (H9CEAI, NCI MSc AI in Business).<br>
+        Partner details and availability slots are simulated. No real data is collected or stored.<br>
+        <a href="#">Privacy Policy</a> &nbsp;·&nbsp; <a href="#">Accessibility Statement</a> &nbsp;·&nbsp; <a href="index.html">Main Site</a>
+    </p>
+</footer>
+
+<script>
+    // ===== STATE =====
+    const answers = { q1: null, q2: null, q3: null };
+    let currentPanel = 0;
+
+    // ===== PANEL NAVIGATION =====
+    function goToPanel(index) {
+        document.querySelectorAll('.panel').forEach((p, i) => {
+            p.classList.toggle('active', i === index);
+        });
+        document.querySelectorAll('.step-btn').forEach((btn, i) => {
+            btn.classList.remove('active', 'completed');
+            if (i === index) btn.classList.add('active');
+            if (i < index) btn.classList.add('completed');
+        });
+        currentPanel = index;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ===== OPTION SELECTION =====
+    function selectOption(q, value, label, icon) {
+        answers['q' + q] = { value, label, icon };
+
+        // Update visual state
+        document.querySelectorAll(`#q${q}-options .option-label`).forEach(el => {
+            el.classList.remove('selected');
+        });
+        event.currentTarget.classList.add('selected');
+
+        // Mark card answered
+        document.getElementById(`qcard-${q}`).classList.add('answered');
+
+        // Enable button if all 3 answered
+        const allAnswered = answers.q1 && answers.q2 && answers.q3;
+        const btn = document.getElementById('assess-btn');
+        btn.classList.toggle('ready', allAnswered);
+    }
+
+    // ===== RESULT LOGIC =====
+    function showResult() {
+        if (!answers.q1 || !answers.q2 || !answers.q3) return;
+
+        const sport = answers.q1.value;
+        const limb = answers.q2.value;
+        const country = answers.q3.value;
+
+        const resultCard = document.getElementById('result-card');
+        const waitlistCard = document.getElementById('waitlist-card');
+
+        // Hide both first
+        resultCard.classList.remove('visible');
+        waitlistCard.classList.remove('visible');
+
+        if (country === 'other') {
+            waitlistCard.classList.add('visible');
+            waitlistCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            return;
+        }
+
+        // Build personalised result
+        let deviceName, deviceDesc, body, icon, title, sub;
+
+        if (limb === 'arm') {
+            icon = '🦾';
+            sub = 'Upper limb programme — coming soon';
+            title = 'We're almost ready for you.';
+            body = `MagnaStep's current device range focuses on lower-limb amputees. We are actively developing an upper-limb adaptive sport programme — and we want ${answers.q1.label} athletes like you to be part of it from day one.`;
+            deviceName = 'Upper Limb Sport Attachment (Beta Programme)';
+            deviceDesc = 'Register to join our beta programme for upper-limb athletes. No cost, no commitment — just first access.';
+        } else if (limb === 'below-knee') {
+            icon = '✅';
+            sub = 'You are a strong match';
+            title = 'MagnaStep is built for you.';
+            if (sport === 'running') {
+                deviceName = 'MagnaStep Run — Below-Knee Blade';
+                deviceDesc = 'Carbon-fibre running blade with magnetic coupling. Optimised for track, road, and trail running at all speeds.';
+                body = `Below-knee amputees are our primary target. For ${answers.q1.label}, the MagnaStep Run blade gives you the responsiveness and energy return of elite-grade blades at a fraction of the cost — fitted locally in ${answers.q3.label} by a trained technician.`;
+            } else if (sport === 'boarding') {
+                deviceName = 'MagnaStep Board — Binding Attachment';
+                deviceDesc = 'Magnetic board binding compatible with standard snowboard and skateboard setups. Secure, adjustable, removable.';
+                body = `${answers.q1.label} with a below-knee amputation — you are exactly who MagnaStep was designed for. The Board attachment clips directly onto your base implant. Amara uses this exact configuration.`;
+            } else if (sport === 'cycling') {
+                deviceName = 'MagnaStep Cycle — Clip System';
+                deviceDesc = 'SPD-compatible cycling clip attachment. Works with standard road and mountain bike pedals.';
+                body = `Cycling is one of the most accessible adaptive sports — and with a below-knee MagnaStep device, you'll have the mechanical advantage of a direct-drive coupling. Fitted in ${answers.q3.label}.`;
+            } else {
+                deviceName = 'MagnaStep Base — Multi-Sport Kit';
+                deviceDesc = 'Base implant with 3 interchangeable attachments: running blade, board binding, and cycling clip.';
+                body = `With multiple sports in mind, the MagnaStep Base kit gives you all three sport-specific attachments. Swap between activities without removing the implant — just click and go.`;
+            }
+        } else if (limb === 'above-knee') {
+            icon = '🔶';
+            sub = 'Supported with adaptations';
+            title = 'We can work with you.';
+            deviceName = 'MagnaStep Flex — Above-Knee System';
+            deviceDesc = 'Above-knee system with adaptive joint and sport attachment. Fitting requires additional clinical assessment.';
+            body = `Above-knee fittings require a more detailed clinical assessment — but we have above-knee athletes in our pilot programme across ${answers.q3.label}. Your fitting partner will conduct a full assessment before recommending a configuration.`;
+        } else {
+            icon = '🔶';
+            sub = 'Let's talk about your situation';
+            title = 'Every case is different.';
+            deviceName = 'Personalised Assessment Required';
+            deviceDesc = 'Your fitting partner will conduct a full assessment and recommend the best configuration for your specific situation.';
+            body = `Complex or multiple limb situations need an in-person consultation. Your partner in ${answers.q3.label} will assess your situation and design a fitting plan specifically for you. Register below and they'll be in touch within 5 working days.`;
+        }
+
+        document.getElementById('result-icon').textContent = icon;
+        document.getElementById('result-sub').textContent = sub;
+        document.getElementById('result-title').textContent = title;
+        document.getElementById('result-body').textContent = body;
+        document.getElementById('result-device-name').textContent = deviceName;
+        document.getElementById('result-device-desc').textContent = deviceDesc;
+
+        // Pre-fill country in registration form
+        const countrySelect = document.getElementById('country');
+        if (countrySelect) countrySelect.value = country;
+        const activitySelect = document.getElementById('activity');
+        if (activitySelect && answers.q1) activitySelect.value = answers.q1.value;
+
+        // Pre-filter partners
+        filterPartners(answers.q3.label.charAt(0).toUpperCase() + answers.q3.value.slice(1));
+
+        resultCard.classList.add('visible');
+        resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // ===== PARTNER FILTER =====
+    function filterPartners(country, btn) {
+        if (btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        const cards = document.querySelectorAll('.partner-card');
+        let visible = 0;
+        cards.forEach(card => {
+            const match = country === 'all' || card.dataset.country === country;
+            card.classList.toggle('hidden', !match);
+            if (match) visible++;
+        });
+
+        document.getElementById('no-results').style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    // ===== FORM SUBMISSION =====
+    function submitForm(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        btn.textContent = 'Registering…';
+        btn.disabled = true;
+
+        // Simulate network delay
+        setTimeout(() => {
+            const ref = 'MGS-' + Math.floor(1000 + Math.random() * 9000);
+            const formData = {
+                name: document.getElementById('fname').value + ' ' + document.getElementById('lname').value,
+                email: document.getElementById('email').value,
+                country: document.getElementById('country').value,
+                activity: document.getElementById('activity').value,
+                ref: ref,
+                timestamp: new Date().toISOString()
+            };
+            console.log('[MagnaStep Alpha] Interest registered:', formData);
+
+            document.getElementById('success-ref').textContent = ref;
+            document.getElementById('form-card').style.display = 'none';
+            document.getElementById('success-card').classList.add('visible');
+            document.getElementById('register-nav').style.display = 'none';
+            document.getElementById('success-card').scrollIntoView({ behavior: 'smooth' });
+        }, 1200);
+    }
+</script>
+
+</body>
+</html>
