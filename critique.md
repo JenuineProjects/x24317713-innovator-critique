@@ -176,9 +176,17 @@ The prototype runs entirely in vanilla JavaScript with no backend. Form data log
 
 The €2M seed offer is real. The problem is real. Amara is fictional but the 1–2 million amputees she represents are not. I will not walk away from this funding — but I will not ship an uncertified medical device on a 90-day deadline.
 
-Three lines of evidence converge on the same answer (full detail in Appendix A). A red-team investor immediately identified that the pitch describes a concept, not a manufactured product — no prototype exists in clinically testable form. A simulated EU MDR regulator confirmed that commercial fitting of a Class IIb device without CE certification is unlawful before the first patient is touched. A target user in Kigali noted that a dead phone number ends referral-based trust permanently in a community that runs on word of mouth.
+**Red-Team Analysis (Approach e — simulated adversarial personas)**
 
-A pre-mortem surfaces the single most likely failure mode: MagnaStep ships at 90 days, an adverse fitting event on a 17-year-old athlete generates press, and disability service partners withdraw. The company never recovers community trust. Sashi's (2012) customer engagement cycle makes this risk concrete — MagnaStep's customers must move from Connection through Satisfaction to Commitment and Advocacy if the model is to work. A single clinical failure before Satisfaction is established collapses the entire cycle; in a referral-driven market, there is no re-entry point. Scenario analysis confirms: shipping without regulatory clearance generates an MDR enforcement notice within 60 days. Shipping at 180 days with conditions met generates 50 pilot fittings and a viable path to Series A.
+Three simulated personas stress-tested the business case. A red-team investor immediately identified that the pitch describes a concept, not a manufactured product — no prototype exists in clinically testable form. A simulated EU MDR regulator confirmed that commercial fitting of a Class IIb device without CE certification is unlawful before the first patient is touched. A target user in Kigali noted that a dead phone number ends referral-based trust permanently in a community that runs on word of mouth. All three personas rejected the 90-day timeline for the same underlying reason: the product is not ready to be in contact with a patient.
+
+**Pre-Mortem (Approach d — failure-mode analysis)**
+
+A pre-mortem surfaces the single most likely failure mode: MagnaStep ships at 90 days, an adverse fitting event on a 17-year-old athlete generates press, and disability service partners withdraw. The company never recovers community trust. Sashi's (2012) customer engagement cycle makes this risk concrete — MagnaStep's customers must move from Connection through Satisfaction to Commitment and Advocacy if the model is to work. A single clinical failure before Satisfaction is established collapses the entire cycle; in a referral-driven market, there is no re-entry point.
+
+**Scenario Analysis (Approach c — structured outcome comparison)**
+
+Two shipping scenarios were evaluated. Scenario A: ship at 90 days without regulatory clearance → MDR enforcement notice within 60 days of first fitting, investor liability exposure, partner withdrawal. Scenario B: ship at 180 days with all five conditions met → 50 pilot fittings completed, clinical evidence generated, Series A pitch legally defensible. Scenario B costs three months of runway (~€350,000 additional burn); it buys the company's survival.
 
 **Five non-negotiable conditions before first fitting:**
 
