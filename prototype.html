@@ -347,6 +347,11 @@
     <span class="nav-tag">Alpha Prototype</span>
 </nav>
 
+<!-- ALPHA DISCLAIMER BANNER -->
+<div style="background: #FFF3CD; border-bottom: 2px solid #D4A853; padding: 0.75rem 2rem; text-align: center; font-size: 0.85rem; color: #5a4000; position: relative; z-index: 150;">
+    <strong>⚠ Alpha Prototype — For Demonstration Only.</strong> Partner details, phone numbers, and availability shown in this tool are simulated and not live. Do not call any numbers shown. This tool does not constitute medical advice.
+</div>
+
 <!-- HERO -->
 <div class="proto-hero">
     <div class="proto-hero-content">
@@ -706,9 +711,15 @@
                 </div>
 
                 <div class="gdpr-row">
-                    <input type="checkbox" id="gdpr" name="gdpr" required>
-                    <label for="gdpr">
-                        I agree that MagnaStep may store and use my details to contact me about my fitting enquiry. My data will not be shared with third parties without my consent. I can withdraw this consent at any time by emailing <a href="mailto:hello@magnastep.io">hello@magnastep.io</a>. See our <a href="#">Privacy Policy</a>.
+                    <input type="checkbox" id="gdpr-health" name="gdpr-health" required>
+                    <label for="gdpr-health">
+                        <strong>Health data consent (required):</strong> I consent to MagnaStep processing my health information — including limb status entered in the self-assessment — solely for the purpose of matching me with a fitting partner. This is sensitive personal data under GDPR Article 9. I can withdraw this consent at any time by emailing <a href="mailto:hello@magnastep.io">hello@magnastep.io</a>.
+                    </label>
+                </div>
+                <div class="gdpr-row">
+                    <input type="checkbox" id="gdpr-marketing" name="gdpr-marketing" required>
+                    <label for="gdpr-marketing">
+                        <strong>Contact consent (required):</strong> I agree that MagnaStep may store and use my contact details to follow up on my fitting enquiry. My data will not be shared with third parties without my consent. See our <a href="#">Privacy Policy</a>.
                     </label>
                 </div>
 
