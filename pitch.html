@@ -451,10 +451,13 @@
             border-radius: 1rem; padding: 2rem;
         }
         .team-avatar {
-            width: 56px; height: 56px; border-radius: 50%;
-            background: var(--green-dark); display: flex; align-items: center;
-            justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem;
-            border: 2px solid rgba(255,255,255,0.1);
+            width: 72px; height: 72px; border-radius: 50%;
+            overflow: hidden; margin-bottom: 1.25rem;
+            border: 2px solid rgba(255,255,255,0.15);
+            flex-shrink: 0;
+        }
+        .team-avatar img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
         }
         .team-name { font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; color: white; margin-bottom: 0.2rem; }
         .team-role { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--terracotta-light); margin-bottom: 0.75rem; }
@@ -930,37 +933,49 @@
         </div>
         <div class="team-grid">
             <div class="team-card reveal reveal-delay-1">
-                <div class="team-avatar">👩🏾</div>
+                <div class="team-avatar">
+                    <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=facearea&facepad=3&w=144&h=144&q=80" alt="Amara Uwimana">
+                </div>
                 <div class="team-name">Amara Uwimana</div>
                 <div class="team-role">CEO & Co-Founder</div>
                 <div class="team-bio">Former disability policy advisor to the Rwanda Ministry of Health. 8 years building inclusive sport programmes across East Africa. Adaptive athlete.</div>
             </div>
             <div class="team-card reveal reveal-delay-2">
-                <div class="team-avatar">👨🏾‍🔬</div>
+                <div class="team-avatar">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=facearea&facepad=3&w=144&h=144&q=80" alt="Dr. Emmanuel Habimana">
+                </div>
                 <div class="team-name">Dr. Emmanuel Habimana</div>
                 <div class="team-role">CTO & Co-Founder</div>
                 <div class="team-bio">Biomedical engineer. PhD in prosthetics design (Stellenbosch University). 6 years at Össur on magnetic coupling systems. Returned to Rwanda in 2024.</div>
             </div>
             <div class="team-card reveal reveal-delay-3">
-                <div class="team-avatar">👩🏿‍💼</div>
+                <div class="team-avatar">
+                    <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=facearea&facepad=3&w=144&h=144&q=80" alt="Grace Nakamura">
+                </div>
                 <div class="team-name">Grace Nakamura</div>
                 <div class="team-role">Country Director — Rwanda</div>
                 <div class="team-bio">10 years managing disability rehabilitation networks across Rwanda and Uganda. Former UNAPD regional coordinator. Speaks Kinyarwanda, Luganda, and English.</div>
             </div>
             <div class="team-card reveal reveal-delay-2">
-                <div class="team-avatar">🧑🏾‍⚕️</div>
+                <div class="team-avatar">
+                    <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=facearea&facepad=3&w=144&h=144&q=80" alt="Dr. Josiane Murekatete">
+                </div>
                 <div class="team-name">Dr. Josiane Murekatete</div>
                 <div class="team-role">Clinical Lead</div>
                 <div class="team-bio">Orthopaedic specialist, University of Rwanda. 12 years clinical practice in prosthetics fitting and rehabilitation. Certified in EU Medical Device Regulation.</div>
             </div>
             <div class="team-card reveal reveal-delay-3">
-                <div class="team-avatar">📣</div>
+                <div class="team-avatar">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=facearea&facepad=3&w=144&h=144&q=80" alt="Kwame Asante">
+                </div>
                 <div class="team-name">Kwame Asante</div>
                 <div class="team-role">Marketing & Community</div>
                 <div class="team-bio">Built the African Paralympic Committee's social media from 2K to 180K followers. Documentary filmmaker. Disability sport advocate based in Kigali.</div>
             </div>
             <div class="team-card reveal reveal-delay-4">
-                <div class="team-avatar">💰</div>
+                <div class="team-avatar">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=facearea&facepad=3&w=144&h=144&q=80" alt="Sarah Okonkwo">
+                </div>
                 <div class="team-name">Sarah Okonkwo</div>
                 <div class="team-role">CFO</div>
                 <div class="team-bio">Former impact investment analyst at Acumen Fund. Structured impact-linked debt facilities across 6 African markets. CFA charterholder.</div>
