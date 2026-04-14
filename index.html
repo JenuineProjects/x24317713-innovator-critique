@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MagnaStep — Move Without Limits</title>
+    <meta name="description" content="MagnaStep makes high-performance magnetic sport prosthetics accessible to young amputees across sub-Saharan Africa.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧲</text></svg>">
+    <style>
+        :root {
+            --terracotta: #C8553D;
+            --terracotta-light: #E8704A;
+            --terracotta-dark: #A0402C;
+            --green: #2D6A4F;
+            --green-light: #3D8A65;
+            --green-dark: #1A3D2B;
+            --cream: #FDF6F0;
+            --white: #FFFFFF;
+            --dark: #1A1A1A;
+            --grey: #6B7280;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; color: var(--dark); background: var(--white); line-height: 1.6; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+        img { max-width: 100%; height: auto; display: block; }
+        a { color: inherit; text-decoration: none; }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 2.5rem;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+        }
+        .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; color: var(--green); }
+        .nav-logo span { color: var(--terracotta); }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--dark); transition: color 0.2s; }
+        .nav-links a:hover { color: var(--terracotta); }
+        .nav-cta { background: var(--terracotta); color: white !important; padding: 0.6rem 1.4rem; border-radius: 50px; font-weight: 600; transition: background 0.2s !important; }
+        .nav-cta:hover { background: var(--terracotta-dark) !important; }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center;
+            position: relative; overflow: hidden; background: var(--green-dark);
+        }
+        .hero-bg {
+            position: absolute; inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center; opacity: 0.3;
+        }
+        .hero-content {
+            position: relative; z-index: 2;
+            max-width: 820px; padding: 8rem 2rem 4rem;
+            margin: 0 auto; text-align: center;
+        }
+        .hero-tag {
+            display: inline-block; background: var(--terracotta); color: white;
+            font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em;
+            text-transform: uppercase; padding: 0.4rem 1.1rem;
+            border-radius: 50px; margin-bottom: 1.75rem;
+        }
+        .hero h1 { font-size: clamp(2.8rem, 6vw, 4.8rem); color: white; margin-bottom: 1.5rem; font-weight: 900; }
+        .hero h1 em { font-style: italic; color: var(--terracotta-light); }
+        .hero p { font-size: 1.2rem; color: rgba(255,255,255,0.82); max-width: 560px; margin: 0 auto 2.5rem; font-weight: 300; }
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn-primary { background: var(--terracotta); color: white; padding: 1rem 2.2rem; border-radius: 50px; font-weight: 600; font-size: 1rem; transition: all 0.2s; border: none; cursor: pointer; display: inline-block; }
+        .btn-primary:hover { background: var(--terracotta-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,85,61,0.35); }
+        .btn-secondary { background: transparent; color: white; padding: 1rem 2.2rem; border-radius: 50px; font-weight: 600; font-size: 1rem; border: 2px solid rgba(255,255,255,0.45); transition: all 0.2s; cursor: pointer; display: inline-block; }
+        .btn-secondary:hover { border-color: white; background: rgba(255,255,255,0.1); }
+
+        /* STATS BAR */
+        .stats-bar { background: var(--green); padding: 2.25rem 2rem; display: flex; justify-content: center; gap: 4rem; flex-wrap: wrap; }
+        .stat { text-align: center; color: white; }
+        .stat-number { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; color: var(--terracotta-light); }
+        .stat-label { font-size: 0.82rem; font-weight: 500; opacity: 0.82; margin-top: 0.2rem; }
+
+        /* SECTIONS */
+        section { padding: 6rem 2rem; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .section-tag { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 0.85rem; }
+        .section-title { font-size: clamp(1.9rem, 4vw, 2.9rem); margin-bottom: 1.25rem; }
+        .section-subtitle { font-size: 1.05rem; color: var(--grey); max-width: 600px; line-height: 1.75; }
+
+        /* STORY */
+        .story { background: var(--cream); }
+        .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .story-image { border-radius: 1rem; overflow: hidden; height: 520px; }
+        .story-image img { width: 100%; height: 100%; object-fit: cover; }
+        .story-quote { font-family: 'Playfair Display', serif; font-size: 1.45rem; color: var(--green-dark); font-style: italic; border-left: 4px solid var(--terracotta); padding-left: 1.5rem; margin: 1.75rem 0; line-height: 1.55; }
+        .story-body { color: var(--grey); line-height: 1.85; font-size: 0.98rem; }
+        .story-body p + p { margin-top: 1rem; }
+
+        /* PROBLEM */
+        .problem { background: var(--white); }
+        .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; margin-top: 3rem; }
+        .problem-card { padding: 2rem; border-radius: 1rem; background: var(--cream); border-top: 4px solid var(--terracotta); }
+        .problem-card h3 { font-size: 1.05rem; margin-bottom: 0.7rem; color: var(--green-dark); font-family: 'Inter', sans-serif; font-weight: 600; }
+        .problem-card p { font-size: 0.93rem; color: var(--grey); line-height: 1.75; }
+
+        /* SOLUTION */
+        .solution { background: var(--green-dark); color: white; }
+        .solution .section-tag { color: var(--terracotta-light); }
+        .solution .section-title { color: white; }
+        .solution .section-subtitle { color: rgba(255,255,255,0.72); }
+        .solution-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; margin-top: 3rem; }
+        .solution-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.13); border-radius: 1rem; padding: 2rem; transition: transform 0.2s, background 0.2s; }
+        .solution-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.11); }
+        .solution-icon { font-size: 2.25rem; margin-bottom: 1rem; }
+        .solution-card h3 { font-size: 1.1rem; color: var(--terracotta-light); margin-bottom: 0.7rem; font-family: 'Inter', sans-serif; font-weight: 600; }
+        .solution-card p { font-size: 0.93rem; color: rgba(255,255,255,0.72); line-height: 1.75; }
+
+        /* VIDEO */
+        .video-section { background: var(--cream); text-align: center; }
+        .video-wrapper { position: relative; max-width: 800px; margin: 3rem auto 0; border-radius: 1rem; overflow: hidden; box-shadow: 0 24px 64px rgba(0,0,0,0.14); background: var(--green-dark); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; }
+        .video-placeholder { text-align: center; color: white; padding: 2rem; }
+        .play-btn { width: 80px; height: 80px; background: var(--terracotta); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; font-size: 1.75rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+        .play-btn:hover { transform: scale(1.1); box-shadow: 0 0 0 12px rgba(200,85,61,0.2); }
+        .video-placeholder p { font-size: 1rem; opacity: 0.7; font-style: italic; }
+
+        /* IMPACT PHOTO */
+        .impact-photo { position: relative; height: 500px; overflow: hidden; }
+        .impact-photo img { width: 100%; height: 100%; object-fit: cover; }
+        .impact-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(26,61,43,0.92) 45%, transparent); display: flex; align-items: center; padding: 5rem; }
+        .impact-text { max-width: 500px; color: white; }
+        .impact-text h2 { font-size: clamp(1.8rem, 3.5vw, 2.7rem); margin-bottom: 1rem; }
+        .impact-text p { font-size: 1.05rem; opacity: 0.82; line-height: 1.75; margin-bottom: 2rem; }
+
+        /* PARTNERS */
+        .partners { background: var(--white); }
+        .partners .section-subtitle { margin-bottom: 3rem; }
+        .partner-types { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .partner-type { background: var(--cream); border-radius: 1rem; padding: 2.5rem; }
+        .partner-type h3 { color: var(--green-dark); margin-bottom: 0.75rem; font-size: 1.15rem; font-family: 'Inter', sans-serif; font-weight: 600; }
+        .partner-type p { color: var(--grey); font-size: 0.93rem; line-height: 1.75; margin-bottom: 1.25rem; }
+        .partner-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .partner-tag { background: var(--green); color: white; font-size: 0.78rem; padding: 0.35rem 0.9rem; border-radius: 50px; font-weight: 500; }
+
+        /* CTA */
+        .cta-section { background: var(--terracotta); text-align: center; color: white; }
+        .cta-section h2 { font-size: clamp(1.9rem, 4vw, 3rem); margin-bottom: 1rem; color: white; }
+        .cta-section p { font-size: 1.1rem; opacity: 0.88; max-width: 500px; margin: 0 auto 2.5rem; }
+        .btn-white { background: white; color: var(--terracotta); padding: 1rem 2.5rem; border-radius: 50px; font-weight: 700; font-size: 1rem; border: none; cursor: pointer; transition: all 0.2s; display: inline-block; }
+        .btn-white:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.15); }
+
+        /* PRICING */
+        .pricing { background: var(--cream); }
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; margin-top: 3rem; }
+        .pricing-card { background: white; border-radius: 1rem; padding: 2.25rem; border: 2px solid transparent; box-shadow: 0 2px 16px rgba(0,0,0,0.05); }
+        .pricing-card--featured { border-color: var(--terracotta); position: relative; }
+        .pricing-card--featured::before { content: 'Most Common'; position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: var(--terracotta); color: white; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 1.1rem; border-radius: 0 0 0.5rem 0.5rem; white-space: nowrap; }
+        .pricing-tier { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 0.75rem; }
+        .pricing-price { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 900; color: var(--green-dark); margin-bottom: 0.75rem; line-height: 1.1; }
+        .pricing-desc { font-size: 0.9rem; color: var(--grey); line-height: 1.75; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 1.25rem; }
+        .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+        .pricing-features li { font-size: 0.88rem; color: var(--dark); padding-left: 1.5rem; position: relative; line-height: 1.5; }
+        .pricing-features li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+        .pricing-note { margin-top: 2.5rem; text-align: center; font-size: 0.88rem; color: var(--grey); line-height: 1.75; }
+        .pricing-note a { color: var(--terracotta); font-weight: 600; text-decoration: underline; }
+
+        /* FOOTER */
+        footer { background: var(--dark); color: rgba(255,255,255,0.55); padding: 3rem 2rem; text-align: center; font-size: 0.83rem; line-height: 1.9; }
+        footer strong { color: white; }
+        footer a { color: rgba(255,255,255,0.55); text-decoration: underline; }
+        footer a:hover { color: white; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .story-grid, .problem-grid, .solution-grid, .partner-types, .pricing-grid { grid-template-columns: 1fr; }
+            .story-image { height: 300px; }
+            .nav-links { display: none; }
+            .stats-bar { gap: 2rem; }
+            .impact-overlay { padding: 2rem; background: rgba(26,61,43,0.88); }
+            .impact-photo { height: auto; }
+            .impact-photo img { height: 500px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-logo">Magna<span>Step</span></div>
+    <div class="nav-links">
+        <a href="#story">Our Story</a>
+        <a href="#solution">The Solution</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#partners">Partners</a>
+        <a href="#cta" class="nav-cta">Get Involved</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+        <span class="hero-tag">Adaptive Sport Technology · Rwanda</span>
+        <h1>Move Without <em>Limits.</em></h1>
+        <p>MagnaStep brings high-performance magnetic sport prosthetics to young amputees across sub-Saharan Africa — because your body was never the barrier.</p>
+        <div class="hero-buttons">
+            <a href="#story" class="btn-primary">Hear Amara's Story</a>
+            <a href="#solution" class="btn-secondary">How It Works</a>
+        </div>
+    </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+    <div class="stat">
+        <div class="stat-number">40M+</div>
+        <div class="stat-label">Amputees in sub-Saharan Africa</div>
+    </div>
+    <div class="stat">
+        <div class="stat-number">&lt;1%</div>
+        <div class="stat-label">Access to advanced prosthetics</div>
+    </div>
+    <div class="stat">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Countries. Growing fast.</div>
+    </div>
+    <div class="stat">
+        <div class="stat-number">$2K</div>
+        <div class="stat-label">Target price vs. $70K in the West</div>
+    </div>
+</div>
+
+<!-- AMARA'S STORY -->
+<section class="story" id="story">
+    <div class="container">
+        <div class="story-grid">
+            <div class="story-image">
+                <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=800&q=80"
+                     alt="Young woman in Rwanda" loading="lazy">
+            </div>
+            <div class="story-content">
+                <p class="section-tag">Our Inspiration</p>
+                <h2 class="section-title">Meet Amara.</h2>
+                <div class="story-quote">"I always assumed that world wasn't for me. MagnaStep made me realise the only thing holding me back was access."</div>
+                <div class="story-body">
+                    <p>Amara grew up tending her family's tomato farm in the hills of Rwanda. She lost her leg as a child. Every evening she'd watch snowboarders on her phone — that mix of speed and freedom — and quietly let the dream go.</p>
+                    <p>Then she heard about magnetic osseointegration: prosthetics responsive enough for dynamic sport. The technology existed. But it cost $70,000 and was only available in Europe. For Amara, it might as well have been on another planet.</p>
+                    <p>MagnaStep was built for Amara. And for the thousands like her across Rwanda, Uganda, and Kenya whose aspiration has always been bigger than their access.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- THE PROBLEM -->
+<section class="problem" id="problem">
+    <div class="container">
+        <p class="section-tag">The Problem</p>
+        <h2 class="section-title">The barrier was never the body.</h2>
+        <p class="section-subtitle">Young amputees across sub-Saharan Africa are physically capable of competing at the highest levels. Three things stand in their way.</p>
+        <div class="problem-grid">
+            <div class="problem-card">
+                <h3>💰 Cost</h3>
+                <p>High-performance magnetic prosthetics cost $15,000–$70,000 in Western markets — completely out of reach for most families in the region.</p>
+            </div>
+            <div class="problem-card">
+                <h3>📍 Geography</h3>
+                <p>Specialist fitting clinics exist only in Europe and North America. Travelling there for fittings and adjustments is logistically and financially impossible for most patients.</p>
+            </div>
+            <div class="problem-card">
+                <h3>🏅 Pathway</h3>
+                <p>Even where prosthetics are available, there is no structured route from rehabilitation into sport — no clubs, no coaches, no clear progression toward competition.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- THE SOLUTION -->
+<section class="solution" id="solution">
+    <div class="container">
+        <p class="section-tag">The Solution</p>
+        <h2 class="section-title">Three parts. One mission.</h2>
+        <p class="section-subtitle">MagnaStep is not just a prosthetic. It is a complete system built around the athlete — not the device.</p>
+        <div class="solution-grid">
+            <div class="solution-card">
+                <div class="solution-icon">🧲</div>
+                <h3>The Device</h3>
+                <p>A modular magnetic sport prosthetic engineered for dynamic activity — running, boarding, cycling. Manufactured regionally. Target price: $2,000–$4,000. One base implant, swappable sport-specific attachments.</p>
+            </div>
+            <div class="solution-card">
+                <div class="solution-icon">🏥</div>
+                <h3>The Fitting Network</h3>
+                <p>Embedded within existing disability services and rehabilitation centres across Rwanda, Uganda, and Kenya. Local technicians trained by MagnaStep. No need to travel to Europe. Remote support via mobile.</p>
+            </div>
+            <div class="solution-card">
+                <div class="solution-icon">🏆</div>
+                <h3>The Sports Pathway</h3>
+                <p>Partnerships with national sports organisations to create genuinely inclusive training — adaptive athletes alongside able-bodied peers. Local club to national team to Paralympic qualification.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- VIDEO -->
+<section class="video-section" id="video">
+    <div class="container">
+        <p class="section-tag">Amara's Journey</p>
+        <h2 class="section-title">See what's possible.</h2>
+        <p class="section-subtitle" style="margin: 0 auto 0;">One story. Thousands of dreamers. This is what MagnaStep makes real.</p>
+        <div class="video-wrapper" id="videoWrapper">
+            <!-- To embed your video: replace this div with an iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" -->
+            <div class="video-placeholder">
+                <div class="play-btn" onclick="this.style.transform='scale(0.95)'">▶</div>
+                <p>Amara's Story — Video Coming Soon</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- IMPACT PHOTO -->
+<div class="impact-photo">
+    <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1920&q=80"
+         alt="Rolling green hills of Rwanda" loading="lazy">
+    <div class="impact-overlay">
+        <div class="impact-text">
+            <h2>Built in Rwanda. Built for the world.</h2>
+            <p>Every design decision starts with the communities we serve — not the investors, not the markets. If it doesn't work for Amara, it doesn't ship.</p>
+            <a href="#cta" class="btn-primary">Join the movement</a>
+        </div>
+    </div>
+</div>
+
+<!-- PARTNERS -->
+<section class="partners" id="partners">
+    <div class="container">
+        <p class="section-tag">Built Together</p>
+        <h2 class="section-title">Inclusion is a team sport.</h2>
+        <p class="section-subtitle">MagnaStep works through organisations that already have the trust, reach, and relationships in the communities we serve.</p>
+        <div class="partner-types">
+            <div class="partner-type">
+                <h3>🏥 Disability Services Partners</h3>
+                <p>We embed within existing rehabilitation centres and disability organisations — bringing the device and technician training to infrastructure that is already trusted and already there.</p>
+                <div class="partner-tags">
+                    <span class="partner-tag">Rwanda Disability Board</span>
+                    <span class="partner-tag">UNAPD Uganda</span>
+                    <span class="partner-tag">Kenya Disability Survey</span>
+                    <span class="partner-tag">Regional Rehab Centres</span>
+                </div>
+            </div>
+            <div class="partner-type">
+                <h3>🏅 Sports Organisation Partners</h3>
+                <p>We partner with national federations and local clubs to build inclusive training environments — not separate adaptive leagues, but shared spaces where everyone competes together.</p>
+                <div class="partner-tags">
+                    <span class="partner-tag">Rwanda Athletics Federation</span>
+                    <span class="partner-tag">Uganda Paralympic Committee</span>
+                    <span class="partner-tag">Kenya Schools Sports</span>
+                    <span class="partner-tag">Adaptive Sport Clubs</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+    <div class="container">
+        <p class="section-tag">Pricing</p>
+        <h2 class="section-title">A price for every circumstance.</h2>
+        <p class="section-subtitle">MagnaStep operates on a sliding-scale model. No one is turned away because of income. Every path leads to the same device — and the same chance to compete.</p>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="pricing-tier">Subsidised Access</div>
+                <div class="pricing-price">Pay what you can</div>
+                <div class="pricing-desc">For individuals below the income threshold, fully supported through our NGO and impact investor grant programme. Eligibility assessed with your local fitting partner — no paperwork, no stigma.</div>
+                <ul class="pricing-features">
+                    <li>Full MagnaStep sport device</li>
+                    <li>Local fitting & calibration</li>
+                    <li>12-month aftercare support</li>
+                    <li>Full sports pathway access</li>
+                </ul>
+            </div>
+            <div class="pricing-card pricing-card--featured">
+                <div class="pricing-tier">Standard Programme</div>
+                <div class="pricing-price">$2,000–$3,500</div>
+                <div class="pricing-desc">Our core offering. Full device, fitting, and a 12-month remote support package. Modular design means you can add sport-specific attachments as your training evolves — without starting over.</div>
+                <ul class="pricing-features">
+                    <li>Full MagnaStep sport device</li>
+                    <li>2 sport-specific attachments</li>
+                    <li>12-month remote monitoring app</li>
+                    <li>Annual in-person check-in</li>
+                    <li>Full sports pathway access</li>
+                </ul>
+            </div>
+            <div class="pricing-card">
+                <div class="pricing-tier">Institutional Partner</div>
+                <div class="pricing-price">Negotiated</div>
+                <div class="pricing-desc">For disability services, rehabilitation centres, and sports organisations placing bulk orders. Volume pricing with certified technician training built in — your team becomes part of our network.</div>
+                <ul class="pricing-features">
+                    <li>Bulk device pricing</li>
+                    <li>Technician certification programme</li>
+                    <li>Dedicated partner support line</li>
+                    <li>Co-branded sports pathway</li>
+                    <li>Annual programme review</li>
+                </ul>
+            </div>
+        </div>
+        <p class="pricing-note">All prices are indicative targets for the alpha programme. MagnaStep is committed to ensuring that income is never a barrier to access.<br><a href="#cta">Talk to us about your situation →</a></p>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+    <div class="container">
+        <h2>Your dream doesn't need permission.</h2>
+        <p>Whether you're an amputee, a clinician, a sports organisation, or an investor — there is a place for you in what we are building.</p>
+        <a href="#" class="btn-white">Get Involved</a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p><strong>MagnaStep</strong> — Kigali, Rwanda</p>
+    <p style="margin-top:0.5rem;">
+        This is an alpha prototype created for educational purposes as part of the H9CEAI module,<br>
+        National College of Ireland, MSc AI in Business. All statistics are indicative estimates.<br>
+        This site does not constitute a medical, commercial, or investment offer.
+    </p>
+    <p style="margin-top:0.75rem;">
+        <a href="#">Privacy Policy</a> &nbsp;·&nbsp; <a href="#">Accessibility Statement</a> &nbsp;·&nbsp; <a href="#">Contact</a>
+    </p>
+    <p style="margin-top:1rem; opacity:0.4; font-size:0.78rem;">Photography: Unsplash. Built with HTML, CSS, and vanilla JavaScript.</p>
+</footer>
+
+</body>
+</html>

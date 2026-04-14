@@ -1,0 +1,3 @@
+# Story
+
+In the rolling hills of Rwanda, a young girl named Amara tended her family's small farm, nurturing rows of tomatoes and a flock of chickens that she knew by name. Every evening, she watched videos of snowboarders carving through mountain snow, dreaming of the feeling — though she had lost her leg as a child and assumed that world was not for her. Then one day, she read about a breakthrough in magnetic prosthetic technology: limb attachments so responsive, so precisely fitted, that amputees were competing at the highest levels of adaptive sport. Amara looked out at her tomatoes, at her chickens, at the Virunga Mountains on the horizon, and thought: *why not me?*
